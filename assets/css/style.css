@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap');
+
+body {
+  font-family: 'Open Sans', Arial;
+    background: #e5e1dd;
+  }
+  hr{
+    width: 90%;
+  }
+
+  form {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+  }
+
+  #footer i{
+    color: #ffffff;
+  }
+
+  a{
+    text-decoration: none;
+  }
