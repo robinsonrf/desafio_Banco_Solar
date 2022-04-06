@@ -52,6 +52,14 @@ const setInfoModal = (nombre, balance, id) => {
       alert("Debe seleccionar un emisor, receptor y monto a transferir");
       return false;
     }
+    if(emisor == receptor){
+      alert("El emisor y receptor deben ser diferentes");
+      return false;
+    }
+    if( monto <= 0){
+      alert("el monto debe ser mayor a cero");
+      return false;
+    }
     try {
       const response = await fetch("http://localhost:3000/transferencia", {
         method: "post",
@@ -62,6 +70,9 @@ const setInfoModal = (nombre, balance, id) => {
         }),
       });
       const data = await response.json();
+      if (data.error){
+        alert("pa sacar hay que hecharle")
+      }
       location.reload();
     } catch (e) {
       console.log(e);
@@ -111,7 +122,7 @@ const setInfoModal = (nombre, balance, id) => {
     data.forEach((t) => {
       $(".transferencias").append(`
        <tr>
-         <td> ${formatDate(t[4])} </td>
+         <td> ${formatDate(t[0])} </td>
          <td> ${t[1]} </td>
          <td> ${t[2]} </td>
          <td> ${t[3]} </td>

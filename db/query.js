@@ -1,4 +1,5 @@
 const {Pool} = require('pg');
+const moment = require('moment');
 
 const pool = new Pool({
     user: "postgres",
@@ -20,8 +21,10 @@ const agregarUsuario = async (datos) =>{
         const result = await pool.query(consulta);
         return result;
     }catch(error){
-        console.log(error);
-        return error;
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
     }
 
 }
@@ -33,8 +36,10 @@ const tablaUsuarios = async () =>{
         const result= await pool.query("SELECT * from usuarios WHERE estado = true");
         return result;
     }catch(error){
-        console.log(error);
-        return error;
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
     }
 }
 
@@ -48,11 +53,12 @@ const editar = async (datos) => {
     };
     try {
         const result = await pool.query(consulta);
-        //console.log(result);
         return result;
     } catch (error) {
-        console.log(error);
-        return error;
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
     }
 };
 
@@ -63,8 +69,10 @@ const eliminar = async (id) => {
         const result = await pool.query(`UPDATE usuarios SET estado = false WHERE id = '${id}'`);
         return result;
     } catch (error) {
-        console.log(error.code);
-        return error;
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
     }
 
 };
@@ -73,7 +81,7 @@ const eliminar = async (id) => {
 const realizarTransferencia = async (datos) =>{
 
     const transfer = {
-        text: "INSERT INTO transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, '01/04/2022')",
+        text: `INSERT INTO transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, '${moment().format('L')} ${moment().format('LTS')}')`,
         values: [Number(datos[0]), Number(datos[1]), Number(datos[2])]
     };
 
@@ -95,10 +103,12 @@ const realizarTransferencia = async (datos) =>{
         await pool.query("COMMIT");
         return true;
     }catch(error){
-        console.log(error);
-        console.log("EL COÑISIMO DE SU MADRE")
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
         await pool.query("ROLLBACK");
-        throw error;
+        return error.code;
     }
 
 }
@@ -114,8 +124,10 @@ const tablaTransferencias = async () =>{
         const result= await pool.query(consulta);
         return result.rows;
     }catch(error){
-        console.log(error);
-        return error;
+        console.log(`El error se encuentra en la tabla: ${error.table}.
+        El detalle del error es: ${error.detail}.
+        El codigo de error es: ${error.code}.
+        Restricción violada: ${error.constraint}.`);
     }
 
 }
